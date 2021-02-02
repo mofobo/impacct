@@ -1,0 +1,24 @@
+version: "3.7"
+services:
+  api_service:
+    build: .
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      - maria_db
+    command: sh -c './wait-for maria_db:3306 -- npm start'
+  maria_db:
+    image: "mariadb:10.5.8"
+    restart: 'on-failure'
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      timeout: 20s
+      retries: 10
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_DATABASE: impacct-db
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root

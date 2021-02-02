@@ -1,0 +1,22 @@
+server:
+  port: 8080
+okta:
+  oauth2:
+    issuer: https://dev-62601352.okta.com/oauth2/default
+    client-id: 0oa4xn4jrZecZ3ryw5d6
+    client-secret: o4-aWkNoStzQvNa4xJmb64p3s6vcVJP6nwgaU3xe
+spring:
+  thymeleaf:
+    cache: false
+  datasource:
+    url: jdbc:mariadb://maria_db:3306/impacct-db
+    name: impacct-db
+    username: root
+    password: root
+    driver-class-name: org.mariadb.jdbc.Driver
+  jpa:
+    hibernate.ddl-auto: none
+    properties.hibernate.dialect: org.hibernate.dialect.MariaDB103Dialect
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+    enabled: true
