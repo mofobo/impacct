@@ -1,13 +1,5 @@
 version: "3.7"
 services:
-  api_service:
-    build: .
-    restart: always
-    ports:
-      - 8080:8080
-    depends_on:
-      - maria_db
-    command: sh -c './wait-for maria_db:3306 -- npm start'
   maria_db:
     image: "mariadb:10.5.8"
     restart: 'on-failure'
@@ -22,3 +14,15 @@ services:
       MYSQL_USER: root
       MYSQL_PASSWORD: root
       MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - db-data:/var/lib/mysql
+  api_service:
+    build: .
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      - maria_db
+    command: sh -c './wait-for maria_db:3306 -- npm start'
+volumes:
+  db-data:

@@ -1,0 +1,31 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add Records</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+</head>
+<body>
+<table>
+    <thead>
+    <tr>
+        <th> Id</th>
+        <th> Title</th>
+        <th> Description</th>
+        <th> Amount</th>
+        <th> Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${records.isEmpty()}">
+        <td colspan="2"> No Books Available</td>
+    </tr>
+    <tr th:each="record : ${records}">
+        <td><span th:text="${record.id}"> Id </span></td>
+        <td><span th:text="${record.title}"> Title </span></td>
+        <td><span th:text="${record.description}"> Description </span></td>
+        <td><span th:text="${record.value}"> Amount </span></td>
+        <td><span th:text="${record.date}"> Date </span></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
