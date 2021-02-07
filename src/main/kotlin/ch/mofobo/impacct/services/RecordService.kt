@@ -2,9 +2,14 @@ package ch.mofobo.impacct.services
 
 import ch.mofobo.impacct.entities.Record
 import ch.mofobo.impacct.repositories.RecordRepository
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
+
 
 @Service
 class RecordService(private val recordRepository: RecordRepository) {
@@ -39,7 +44,17 @@ class RecordService(private val recordRepository: RecordRepository) {
             }.orElse(ResponseEntity.notFound().build())
 
     fun saveAll(records: MutableList<Record>) {
-        System.out.println("MOTHER FUCK")
         recordRepository.saveAll(records)
+    }
+
+
+    fun findPaginated(pageNo: Int, pageSize: Int, sortField: String, sortDirection: Sort.Direction): Page<Record> {
+        val sort = when (sortDirection) {
+            Sort.Direction.ASC -> Sort.by(sortField).ascending()
+            Sort.Direction.DESC -> Sort.by(sortField).descending()
+        }
+
+        val pageable: Pageable = PageRequest.of(pageNo - 1, pageSize, sort)
+        return this.recordRepository.findAll(pageable)
     }
 }
