@@ -1,8 +1,8 @@
 package ch.mofobo.impacct.repositories
 
-import ch.mofobo.impacct.entities.Record
+import ch.mofobo.impacct.entities.User
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface RecordRepository : JpaRepository<Record, Long>
+interface UserRepository : JpaRepository<User, String>

@@ -1,20 +1,20 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Add Records</title>
+    <title>Add Transactions</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
 </head>
 <body>
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <h1> Add Records </h1>
+            <h1>Add Transactions </h1>
         </div>
     </div>
     <div class="row">
         <div class="col-md-6">
-            <a class="btn btn-info" href="#" th:href="@{/records/all}"> Back to All Records </a>
+            <a class="btn btn-info" href="#" th:href="@{/templates/transactions/all}"> Back to All Records </a>
             <form action="#" class="form-horizontal"
-                  th:action="@{/records/save}"
+                  th:action="@{/templates/transactions/save}"
                   th:object="${form}"
                   method="post">
                 <fieldset>
@@ -32,11 +32,12 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="record, itemStat : *{records}">
-                            <td><input th:placeholder="Title + ' ' + ${itemStat.count}" th:field="*{records[__${itemStat.index}__].title}" required/></td>
-                            <td><input th:placeholder="Description + ' ' + ${itemStat.count}" th:field="*{records[__${itemStat.index}__].description}" required/></td>
-                            <td><input th:placeholder="Amount + ' ' + ${itemStat.count}" th:field="*{records[__${itemStat.index}__].value}" required/></td>
-                            <td><input th:placeholder="Date + ' ' + ${itemStat.count}" th:field="*{records[__${itemStat.index}__].date}" type="date" required/></td>
+                        <tr th:each="transactionDto : *{transactionsDto}">
+                            <td><input th:placeholder="Title" th:field="${transactionDto.title}" required/></td>
+                            <td><input th:placeholder="Description" th:field="${transactionDto.description}" required/></td>
+                            <td><input th:placeholder="Amount" th:field="${transactionDto.amount}" required/></td>
+                            <td><input th:placeholder="Date" th:field="${transactionDto.date}" required/></td>
+                            {transactionDto.date}" type="date" required/></td>
                         </tr>
                         </tbody>
                     </table>
