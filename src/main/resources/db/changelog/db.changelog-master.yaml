@@ -1,10 +1,10 @@
 databaseChangeLog:
   - changeSet:
       id: 1
-      author: Mohammed Fonseca Boukhalat
+      author: mofobo
       changes:
         - sqlFile:
-            dbms: mariadb
+            dbms: postgresql
             encoding: utf8
             endDelimiter: \n/\s*\n|\n/\s*$
             path: changes/v0001.sql

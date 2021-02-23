@@ -1,7 +1,6 @@
 package ch.mofobo.impacct.controllers
 
 import ch.mofobo.impacct.dtos.CategoryDto
-import ch.mofobo.impacct.dtos.TransactionDto
 import org.springframework.data.domain.Sort
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.security.oauth2.core.oidc.user.OidcUser
@@ -9,15 +8,14 @@ import org.springframework.ui.Model
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
 
+@RequestMapping("/categories")
+interface CategoryController {
 
-@RequestMapping(value = ["/transactions"])
-interface TransactionController {
-
-    @GetMapping("/page/{pageNo}")
+    @GetMapping("/page/{page}")
     fun getPaginatedTable(
             @AuthenticationPrincipal
             oidcUser: OidcUser,
-            @PathVariable(value = "pageNo")
+            @PathVariable(value = "page")
             pageNo: Int,
             @RequestParam("sortField")
             sortField: String?,
@@ -30,33 +28,28 @@ interface TransactionController {
             @AuthenticationPrincipal user: OidcUser,
             model: Model): String
 
-    @GetMapping("/{transactionId}/edit")
+    @GetMapping("/{categoryId}/edit")
     fun getEditForm(
-            @PathVariable(value = "transactionId")
-            transactionId: Int,
-            @ModelAttribute transaction: CategoryDto,
+            @PathVariable(value = "categoryId")
+            categoryId: Int,
+            @ModelAttribute categoryDto: CategoryDto,
             model: Model): String
 
     @PostMapping("/save")
     fun save(
-            @AuthenticationPrincipal
-            user: OidcUser,
-            @ModelAttribute
-            transactionDto: TransactionDto,
+            @ModelAttribute categoryDto: CategoryDto,
             model: Model): String
 
-    @PostMapping("/{transactionId}/update")
+    @PostMapping("/{categoryId}/update")
     fun update(
-            @PathVariable(value = "transactionId")
-            transactionId: Int,
-            @ModelAttribute
-            transactionDto: TransactionDto,
+            @PathVariable(value = "categoryId")
+            categoryId: Int,
+            @ModelAttribute categoryDto: CategoryDto,
             result: BindingResult,
             model: Model): String
 
-    @GetMapping("/{transactionId}/delete")
+    @PostMapping("/{categoryId}/delete")
     fun delete(
-            @PathVariable("transactionId")
-            transactionId: Int,
+            @PathVariable("categoryId") categoryId: Int,
             model: Model?): String
 }

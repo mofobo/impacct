@@ -1,28 +1,39 @@
 version: "3.7"
 services:
-  maria_db:
-    image: "mariadb:10.5.8"
-    restart: 'on-failure'
-    healthcheck:
-      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
-      timeout: 20s
-      retries: 10
-    ports:
-      - 3306:3306
+  impacct-db-service:
+    image: postgres:11.2
+    container_name: impacct-db-container
+    restart: on-failure
     environment:
-      MYSQL_DATABASE: impacct-db
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
-      MYSQL_ROOT_PASSWORD: root
+      POSTGRES_DB: "impacct-db"
+      POSTGRES_USER: "myImpacctDbUser"
+      POSTGRES_PASSWORD: "myImpacctDbPassword"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -h impacct-db -p 5432 -U myImpacctDbUser" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    expose:
+      - "5432"
+    ports:
+      - "5432:5432"
     volumes:
-      - db-data:/var/lib/mysql
-  api_service:
+      - "impacct-db-volume:/var/lib/mysql"
+    networks:
+      - impacct-network
+  impacct-service:
+    container_name: impacct-container
     build: .
     restart: always
     ports:
       - 8080:8080
     depends_on:
-      - maria_db
-    command: sh -c './wait-for maria_db:3306 -- npm start'
+      - impacct-db-service
+    command: sh -c './wait-for impacct-db-service:5432 -- npm start'
+    networks:
+      - impacct-network
+networks:
+  impacct-network:
+    driver: bridge
 volumes:
-  db-data:
+  impacct-db-volume: { }

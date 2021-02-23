@@ -1,46 +1,66 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Add Transactions</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <title>Add Transaction</title>
 </head>
 <body>
+<div th:replace="fragments/navbar"></div>
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <h1>Add Transactions </h1>
+            <h1>Add Transaction</h1>
         </div>
     </div>
     <div class="row">
         <div class="col-md-6">
-            <a class="btn btn-info" href="#" th:href="@{/templates/transactions/all}"> Back to All Records </a>
+            <a class="btn btn-info" href="#" th:href="@{/transactions/page/1}">Back to All Transactions</a>
             <form action="#" class="form-horizontal"
-                  th:action="@{/templates/transactions/save}"
-                  th:object="${form}"
+                  th:action="@{/transactions/save}"
+                  th:object="${transaction}"
                   method="post">
                 <fieldset>
-					<span class="pull-right">
-						    <input type="submit" id="submitButton" class="btn btn-success" th:value="Save">
-						    <input type="reset" id="resetButton" class="btn btn-danger" th:value="Reset"/>
-					</span>
                     <table class="table">
                         <thead>
                         <tr>
-                            <th> Title</th>
-                            <th> Description</th>
-                            <th> Amount</th>
-                            <th> Date</th>
+                            <th>Type</th>
+                            <th>Category</th>
+                            <th>Month</th>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Amount</th>
+                            <th>Date</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="transactionDto : *{transactionsDto}">
-                            <td><input th:placeholder="Title" th:field="${transactionDto.title}" required/></td>
-                            <td><input th:placeholder="Description" th:field="${transactionDto.description}" required/></td>
-                            <td><input th:placeholder="Amount" th:field="${transactionDto.amount}" required/></td>
-                            <td><input th:placeholder="Date" th:field="${transactionDto.date}" required/></td>
-                            {transactionDto.date}" type="date" required/></td>
+                        <tr>
+                            <td>
+                                <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                                    <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" value="INCOME" th:field="*{type}" required>
+                                    <label class="btn btn-outline-primary" for="btnradio1">INCOME</label>
+                                    <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" value="EXPENSE" th:field="*{type}" required>
+                                    <label class="btn btn-outline-primary" for="btnradio3">EXPENSE</label>
+                                </div>
+                            </td>
+                            <td>
+                                <select th:field="*{categoryId}" class="form-select" aria-label="Default select example">
+                                    <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+                                </select>
+                            </td>
+                            <td>
+                                <select th:field="*{period}" class="form-select" aria-label="Default select example">
+                                    <option th:each="period : ${periods}" th:value="${period}" th:text="${period.name()}"></option>
+                                </select>
+                            </td>
+                            <td><input th:placeholder="Title" th:field="*{title}" type="text" required/></td>
+                            <td><input th:placeholder="Description" th:field="*{description}" type="text"/></td>
+                            <td><input th:placeholder="Amount" th:field="*{amount}" type="number" required/></td>
+                            <td><input th:placeholder="Date" th:field="*{date}" type="date" dataformatas="mm-yyyy" inputmode="months" required/></td>
                         </tr>
                         </tbody>
                     </table>
+                    <span class="pull-right">
+						    <input type="reset" id="resetButton" class="btn btn-danger" th:value="Reset"/>
+						    <input type="submit" id="submitButton" class="btn btn-success" th:value="Save">
+					</span>
                 </fieldset>
             </form>
         </div>

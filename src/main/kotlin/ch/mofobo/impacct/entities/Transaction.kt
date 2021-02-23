@@ -1,35 +1,33 @@
 package ch.mofobo.impacct.entities
 
 import ch.mofobo.impacct.enums.Period
+import ch.mofobo.impacct.enums.TransactionType
 import javax.persistence.*
 
 @Entity(name = "transactions")
 class Transaction(
         @Id
-        @GeneratedValue
-        @Column(name = "transaction_id")
-        var id: Long? = null,
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        var id: Int? = null,
+
+        @Column(name = "owner_email")
+        var ownerEmail: String,
+
+        @Column(name = "type", columnDefinition = "TransactionType")
+        var type: String,
 
         @OneToOne
-        @JoinColumn(table = "users", name = "user_id")
-        @Column(name = "owner_id")
-        var owner: User,
-
-        @OneToOne
-        @JoinColumn(name = "subcategory_id")
-        var subcategory: Subcategory?,
+        @JoinColumn(name = "category_id")
+        var category: Category,
 
         var title: String,
 
-        var description: String,
+        var description: String? = null,
 
-        @OneToOne
-        @JoinColumn(name = "currency_id")
-        var currency: Currency,
-        var amount: Long,
+        var amount: Int,
 
-        @Column(name = "fiscal_period")
-        var period: Period,
+        @Column(name = "period")
+        var period: String,
 
         var date: String
 )

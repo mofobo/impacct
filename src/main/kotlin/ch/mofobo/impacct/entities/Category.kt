@@ -1,16 +1,12 @@
 package ch.mofobo.impacct.entities
 
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
+import javax.persistence.*
 
 @Entity(name = "categories")
 class Category(
         @Id
-        @GeneratedValue
-        @Column(name = "category_id")
-        var id: Long? = null,
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        var id: Int? = null,
 
         var name: String,
 

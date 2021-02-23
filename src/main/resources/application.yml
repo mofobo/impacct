@@ -9,16 +9,22 @@ spring:
   thymeleaf:
     cache: false
   datasource:
-    url: jdbc:mariadb://maria_db:3306/impacct-db
+    url: jdbc:postgresql://impacct-db-service:5432/impacct-db
     name: impacct-db
-    username: root
-    password: root
-    driver-class-name: org.mariadb.jdbc.Driver
+    username: myImpacctDbUser
+    password: myImpacctDbPassword
+    driver-class-name: org.postgresql.Driver
+    tomcat:
+      validation-query: SELECT 1
   jpa:
     hibernate:
       ddl-auto: none
       use-new-id-generator-mappings: false
-    properties.hibernate.dialect: org.hibernate.dialect.MariaDB103Dialect
+    properties.hibernate:
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+      # remove annoying but harmless startUp invocationTargetException : null
+      temp.use_jdbc_metadata_defaults: false
+    show-sql: true
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.yaml
     enabled: true

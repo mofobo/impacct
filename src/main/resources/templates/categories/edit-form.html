@@ -1,0 +1,47 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Category</title>
+</head>
+<body>
+<div th:replace="fragments/navbar"></div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Edit Category</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <a class="btn btn-info" href="#" th:href="@{/categories/page/1}">Back to All Categories</a>
+            <form action="#" class="form-horizontal"
+                  th:action="@{/categories/{categoryId}/update(categoryId=${category.id})}"
+                  th:object="${category}"
+                  method="post">
+                <fieldset>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td th:text="*{id}"></td>
+                            <td><input th:placeholder="Name" th:field="*{name}" type="text" required/></td>
+                            <td><input th:placeholder="Description" th:field="*{description}" type="text" required/></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <span class="pull-right">
+						    <input type="reset" id="resetButton" class="btn btn-danger" th:value="Reset"/>
+						    <input type="submit" id="submitButton" class="btn btn-success" th:value="Save">
+					</span>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
