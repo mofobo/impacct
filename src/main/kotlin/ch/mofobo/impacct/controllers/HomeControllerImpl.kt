@@ -1,12 +1,14 @@
 package ch.mofobo.impacct.controllers
 
+import ch.mofobo.impacct.dtos.PieChartData
+import ch.mofobo.impacct.services.TransactionService
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 
 @Controller
-class HomeControllerImpl : HomeController {
+class HomeControllerImpl(val transactionService: TransactionService) : HomeController {
 
     companion object {
         private const val TEMPLATE_DIR = "home/"
@@ -14,8 +16,8 @@ class HomeControllerImpl : HomeController {
     }
 
     override fun getHome(model: Model): String {
-        model.addAttribute("pass", 50)
-        model.addAttribute("fail", 50)
+        val pieChartDataList = transactionService.getPieChartData()
+        model.addAttribute("list", pieChartDataList)
         return TEMPLATE_HOME
     }
 }

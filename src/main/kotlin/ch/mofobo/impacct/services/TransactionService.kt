@@ -1,9 +1,11 @@
 package ch.mofobo.impacct.services
 
 import ch.mofobo.impacct.dtos.CategoryDto
+import ch.mofobo.impacct.dtos.PieChartData
 import ch.mofobo.impacct.dtos.TransactionDto
 import ch.mofobo.impacct.entities.Category
 import ch.mofobo.impacct.entities.Transaction
+import ch.mofobo.impacct.enums.Period
 import ch.mofobo.impacct.repositories.CategoryRepository
 import ch.mofobo.impacct.repositories.TransactionRepository
 import org.springframework.data.domain.Page
@@ -61,5 +63,17 @@ class TransactionService(
         return categoryRepository.findAll().map {
             CategoryDto(it.id!!, it.name, it.description)
         }
+    }
+
+    fun getPieChartData(): MutableList<PieChartData> {
+        val pieChartDataList = mutableListOf<PieChartData>()
+        val categories = categoryRepository.findAll()
+        categories.forEach {category->
+            val transactionsByCategory = transactionRepository.findAllByCategory(category)
+            val label=category.name
+            val value=transactionsByCategory.sumBy { it.amount }
+            pieChartDataList.add(PieChartData(label,value))
+        }
+        return pieChartDataList
     }
 }

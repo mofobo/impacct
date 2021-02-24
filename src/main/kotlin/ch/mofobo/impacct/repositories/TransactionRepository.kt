@@ -1,6 +1,8 @@
 package ch.mofobo.impacct.repositories
 
+import ch.mofobo.impacct.entities.Category
 import ch.mofobo.impacct.entities.Transaction
+import ch.mofobo.impacct.enums.Period
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
@@ -10,4 +12,5 @@ import org.springframework.stereotype.Repository
 interface TransactionRepository : JpaRepository<Transaction, Int>
 {
     fun findAllByOwnerEmail(ownerEmail:String, pageable: Pageable): Page<Transaction>
+    fun findAllByCategory(category: Category):MutableList<Transaction>
 }
