@@ -76,4 +76,8 @@ class TransactionService(
         }
         return pieChartDataList
     }
+
+    fun delete(transactionId: Int) {
+        transactionRepository.deleteById(transactionId)
+    }
 }

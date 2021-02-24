@@ -48,7 +48,7 @@ interface CategoryController {
             result: BindingResult,
             model: Model): String
 
-    @PostMapping("/{categoryId}/delete")
+    @GetMapping("/{categoryId}/delete")
     fun delete(
             @PathVariable("categoryId") categoryId: Int,
             model: Model?): String

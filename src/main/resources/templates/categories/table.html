@@ -23,8 +23,8 @@
             <td th:text="${category.name}"></td>
             <td th:text="${category.description}"></td>
             <td>
-                <a th:href="@{/categories/{categoryId}/edit/(categoryId=${category.id})}" class="btn btn-primary">Edit</a>
-                <a th:href="@{/categories/{categoryId}/delete/(categoryId=${category.id})}" class="btn btn-danger" custom>Delete</a>
+                <a th:href="@{/categories/{categoryId}/edit (categoryId=${category.id})}" class="btn btn-primary">Edit</a>
+                <a th:href="@{/categories/{categoryId}/delete (categoryId=${category.id})}" class="btn btn-danger" custom>Delete</a>
             </td>
         </tr>
         </tbody>

@@ -85,6 +85,7 @@ class TransactionControllerImpl(val transactionService: TransactionService) : Tr
     }
 
     override fun delete(transactionId: Int, model: Model?): String {
-        TODO("Not yet implemented")
+        transactionService.delete(transactionId)
+        return REDIRECT_TABLE
     }
 }
