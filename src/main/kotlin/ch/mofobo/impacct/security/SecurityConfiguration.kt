@@ -10,6 +10,7 @@ class SecurityConfiguration : WebSecurityConfigurerAdapter() {
     public override fun configure(http: HttpSecurity) {
         http.antMatcher("/**").authorizeRequests()
                 .antMatchers("/").permitAll()
+                .antMatchers("/styles/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .oauth2Login()

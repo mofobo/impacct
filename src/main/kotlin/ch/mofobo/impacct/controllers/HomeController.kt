@@ -1,15 +1,16 @@
 package ch.mofobo.impacct.controllers
 
-import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
+import ch.mofobo.impacct.dtos.CategoryDto
+import org.springframework.data.domain.Sort
+import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.security.oauth2.core.oidc.user.OidcUser
+import org.springframework.ui.Model
+import org.springframework.validation.BindingResult
+import org.springframework.web.bind.annotation.*
 
-@Controller
-@RequestMapping(value = ["/"])
-class HomeController {
-    @GetMapping
-    fun home(): String {
-        return "redirect:/transactions/page/1"
-    }
+@RequestMapping("/")
+interface HomeController {
 
+    @GetMapping()
+    fun getHome( model: Model): String
 }
