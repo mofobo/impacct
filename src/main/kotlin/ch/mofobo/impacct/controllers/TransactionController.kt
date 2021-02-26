@@ -47,6 +47,8 @@ interface TransactionController {
 
     @PostMapping("/{transactionId}/update")
     fun update(
+            @AuthenticationPrincipal
+            user: OidcUser,
             @PathVariable(value = "transactionId")
             transactionId: Int,
             @ModelAttribute

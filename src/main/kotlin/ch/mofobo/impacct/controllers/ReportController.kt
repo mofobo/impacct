@@ -7,15 +7,13 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser
 import org.springframework.ui.Model
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
-import java.security.Principal
 
-@RequestMapping("/")
-interface HomeController {
+@RequestMapping("/reports")
+interface ReportController {
 
-    @GetMapping()
-    fun getHome(
-            @AuthenticationPrincipal
-            user: OidcUser?,
-            model: Model
-    ): String
+    @GetMapping("/year/{year}")
+    fun getYearlyReport(
+            @PathVariable(value = "year")
+            year: Int,
+            model: Model): String
 }

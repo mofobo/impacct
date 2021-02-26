@@ -1,0 +1,64 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Transaction</title>
+</head>
+<body>
+<div th:replace="fragments/navbar"></div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Edit Transaction</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <a class="btn btn-info" href="#" th:href="@{/transactions/page/1}">Back to All Transactions</a>
+            <form action="#" class="form-horizontal"
+                  th:action="@{/transactions/{transactionId}/update(transactionId=${transaction.id})}"
+                  th:object="${transaction}"
+                  method="post">
+                <fieldset>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Category</th>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Amount in cents</th>
+                            <th>Fiscal Period</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                                <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                                    <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" value="INCOME" th:field="*{type}" required>
+                                    <label class="btn btn-outline-primary" for="btnradio1">INCOME</label>
+                                    <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" value="EXPENSE" th:field="*{type}" required>
+                                    <label class="btn btn-outline-primary" for="btnradio3">EXPENSE</label>
+                                </div>
+                            </td>
+                            <td>
+                                <select th:field="*{categoryId}" class="form-select" aria-label="Default select example">
+                                    <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+                                </select>
+                            </td>
+                            <td><input th:field="*{title}" type="text" required/></td>
+                            <td><input th:field="*{description}" type="text"/></td>
+                            <td><input th:field="*{amount}" type="number" required/></td>
+                            <td><input th:field="*{date}" type="month" dataformatas="mm-yyyy" required/></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <span class="pull-right">
+						    <input type="reset" id="resetButton" class="btn btn-danger" th:value="Reset"/>
+						    <input type="submit" id="submitButton" class="btn btn-success" th:value="Save">
+					</span>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

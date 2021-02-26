@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
+import java.time.YearMonth
 
 @Service
 class TransactionService(
@@ -28,16 +29,17 @@ class TransactionService(
     }
 
     fun save(dto: TransactionDto, ownerEmail: String) {
-        val category = categoryRepository.getOne(dto.categoryId)
+        val category = categoryRepository.getOne(dto.categoryId!!)
 
         val trx = Transaction(
+                id = dto.id,
                 ownerEmail = ownerEmail,
-                type = dto.type.name,
+                type = dto.type!!.name,
                 category = category,
-                title = dto.title,
+                title = dto.title!!,
                 description = dto.description,
-                amount = dto.amount,
-                date = dto.date
+                amount = dto.amount!!,
+                date = dto.date!!
         )
 
         System.out.println("Transaction.ownerEmail: ${trx.ownerEmail}")
@@ -57,19 +59,27 @@ class TransactionService(
         }
     }
 
-    fun getPieChartData(): MutableList<PieChartData> {
+    fun getPieChartData(year: Int): MutableList<PieChartData> {
         val pieChartDataList = mutableListOf<PieChartData>()
         val categories = categoryRepository.findAll()
-        categories.forEach {category->
-            val transactionsByCategory = transactionRepository.findAllByCategory(category)
-            val label=category.name
-            val value=transactionsByCategory.sumBy { it.amount }
-            pieChartDataList.add(PieChartData(label,value))
+        categories.forEach { category ->
+            val transactionsByCategory = transactionRepository.findAllByCategoryAndDateBetween(category, YearMonth.of(year, 1), YearMonth.of(year + 1, 1))
+            val label = category.name
+            val value = transactionsByCategory.sumBy { it.amount }
+            if (value > 0) pieChartDataList.add(PieChartData(label, value))
         }
         return pieChartDataList
     }
 
     fun delete(transactionId: Int) {
         transactionRepository.deleteById(transactionId)
+    }
+
+    fun get(transactionId: Int): Transaction {
+        return transactionRepository.getOne(transactionId)
+    }
+
+    fun getAllDates(): MutableList<YearMonth>? {
+        return transactionRepository.getAllDates()
     }
 }

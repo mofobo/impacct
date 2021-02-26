@@ -70,7 +70,12 @@ class TransactionControllerImpl(val transactionService: TransactionService) : Tr
     }
 
     override fun getEditForm(transactionId: Int, transaction: CategoryDto, model: Model): String {
-        TODO("Not yet implemented")
+        val transaction = transactionService.get(transactionId)
+
+        val categories = transactionService.getCategories()
+        model.addAttribute("categories", categories)
+        model.addAttribute("transaction", TransactionDto(transaction))
+        return TEMPLATE_EDIT
     }
 
     override fun save(user: OidcUser, transactionDto: TransactionDto, model: Model): String {
@@ -78,8 +83,11 @@ class TransactionControllerImpl(val transactionService: TransactionService) : Tr
         return REDIRECT_TABLE
     }
 
-    override fun update(transactionId: Int, transactionDto: TransactionDto, result: BindingResult, model: Model): String {
-        TODO("Not yet implemented")
+    override fun update(user: OidcUser, transactionId: Int, transactionDto: TransactionDto, result: BindingResult, model: Model): String {
+       System.out.println("transactionDto.id: "+transactionId)
+        transactionDto.id=transactionId
+        transactionService.save(transactionDto, user.email)
+        return REDIRECT_TABLE
     }
 
     override fun delete(transactionId: Int, model: Model?): String {
