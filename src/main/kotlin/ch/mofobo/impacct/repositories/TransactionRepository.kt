@@ -2,7 +2,6 @@ package ch.mofobo.impacct.repositories
 
 import ch.mofobo.impacct.entities.Category
 import ch.mofobo.impacct.entities.Transaction
-import ch.mofobo.impacct.enums.Period
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository

@@ -14,8 +14,7 @@ CREATE TABLE IF NOT EXISTS transactions
     title       TEXT    NOT NULL,
     description TEXT,
     amount      INTEGER NOT NULL,
-    date        TEXT    NOT NULL,
-    period      TEXT    NOT NULL,
+    date        DATE    NOT NULL,
 
     FOREIGN KEY (category_id) REFERENCES categories (id)
 );

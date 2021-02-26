@@ -3,7 +3,6 @@ package ch.mofobo.impacct.controllers
 import ch.mofobo.impacct.dtos.CategoryDto
 import ch.mofobo.impacct.dtos.TransactionDto
 import ch.mofobo.impacct.entities.Transaction
-import ch.mofobo.impacct.enums.Period
 import ch.mofobo.impacct.enums.TransactionType
 import ch.mofobo.impacct.services.TransactionService
 import org.springframework.data.domain.Page
@@ -12,6 +11,7 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.validation.BindingResult
+import java.time.YearMonth
 
 
 @Controller
@@ -40,7 +40,7 @@ class TransactionControllerImpl(val transactionService: TransactionService) : Tr
                 direction
         )
 
-        val reverseSortDir = if (direction.isAscending) Sort.Direction.DESC.name else Sort.Direction.DESC.name
+        val reverseSortDir = if (direction.isAscending) Sort.Direction.DESC.name else Sort.Direction.ASC.name
 
         model.addAttribute("currentPage", pageNo)
         model.addAttribute("totalPages", page.totalPages)
@@ -59,15 +59,13 @@ class TransactionControllerImpl(val transactionService: TransactionService) : Tr
                 title = "",
                 description = "",
                 amount = 0,
-                period = Period.JANUARY,
-                date = ""
+                date = YearMonth.now()
         )
 
         val categories = transactionService.getCategories()
 
         model.addAttribute("transaction", transaction)
         model.addAttribute("categories", categories)
-        model.addAttribute("periods", Period.values().toMutableList())
         return TEMPLATE_CREATE
     }
 

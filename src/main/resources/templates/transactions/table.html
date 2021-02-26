@@ -14,7 +14,6 @@
         <thead>
         <tr>
             <th scope="col"><a th:href="@{'/transactions/page/' + ${currentPage} + '?sortField=id&sortDir=' + ${reverseSortDir}}">#</a></th>
-            <th scope="col"><a th:href="@{'/transactions/page/' + ${currentPage} + '?sortField=period&sortDir=' + ${reverseSortDir}}">period</a></th>
             <th scope="col"><a th:href="@{'/transactions/page/' + ${currentPage} + '?sortField=category&sortDir=' + ${reverseSortDir}}">category</a></th>
             <th scope="col"><a th:href="@{'/transactions/page/' + ${currentPage} + '?sortField=title&sortDir=' + ${reverseSortDir}}">title</a></th>
             <th scope="col"><a th:href="@{'/transactions/page/' + ${currentPage} + '?sortField=description&sortDir=' + ${reverseSortDir}}">description</a></th>
@@ -26,7 +25,6 @@
         <tbody>
         <tr th:each="transaction : ${transactions}">
             <td th:text="${transaction.id}"></td>
-            <td th:text="${transaction.period}"></td>
             <td th:text="${transaction.category.name}"></td>
             <td th:text="${transaction.title}"></td>
             <td th:text="${transaction.description}"></td>

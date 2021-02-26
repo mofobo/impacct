@@ -3,9 +3,7 @@ package ch.mofobo.impacct.services
 import ch.mofobo.impacct.dtos.CategoryDto
 import ch.mofobo.impacct.dtos.PieChartData
 import ch.mofobo.impacct.dtos.TransactionDto
-import ch.mofobo.impacct.entities.Category
 import ch.mofobo.impacct.entities.Transaction
-import ch.mofobo.impacct.enums.Period
 import ch.mofobo.impacct.repositories.CategoryRepository
 import ch.mofobo.impacct.repositories.TransactionRepository
 import org.springframework.data.domain.Page
@@ -32,10 +30,6 @@ class TransactionService(
     fun save(dto: TransactionDto, ownerEmail: String) {
         val category = categoryRepository.getOne(dto.categoryId)
 
-        System.out.println("TransactionService.category: $category")
-        System.out.println("TransactionService.categoryId: ${dto.categoryId}")
-        System.out.println("TransactionService.period: ${dto.period}")
-
         val trx = Transaction(
                 ownerEmail = ownerEmail,
                 type = dto.type.name,
@@ -43,7 +37,6 @@ class TransactionService(
                 title = dto.title,
                 description = dto.description,
                 amount = dto.amount,
-                period = dto.period.name,
                 date = dto.date
         )
 
@@ -53,8 +46,7 @@ class TransactionService(
         System.out.println("Transaction.title: ${trx.title}")
         System.out.println("Transaction.description: ${trx.description}")
         System.out.println("Transaction.amount: ${trx.amount}")
-        System.out.println("Transaction.period: ${trx.period}")
-        System.out.println("Transaction.date: ${trx.date}")
+        System.out.println("Transaction.date: ${trx.date.year}")
 
         transactionRepository.save(trx)
     }

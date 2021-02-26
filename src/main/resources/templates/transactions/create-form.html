@@ -23,11 +23,10 @@
                         <tr>
                             <th>Type</th>
                             <th>Category</th>
-                            <th>Month</th>
                             <th>Title</th>
                             <th>Description</th>
-                            <th>Amount</th>
-                            <th>Date</th>
+                            <th>Amount in cents</th>
+                            <th>Fiscal Period</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -45,15 +44,10 @@
                                     <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
                                 </select>
                             </td>
-                            <td>
-                                <select th:field="*{period}" class="form-select" aria-label="Default select example">
-                                    <option th:each="period : ${periods}" th:value="${period}" th:text="${period.name()}"></option>
-                                </select>
-                            </td>
-                            <td><input th:placeholder="Title" th:field="*{title}" type="text" required/></td>
-                            <td><input th:placeholder="Description" th:field="*{description}" type="text"/></td>
-                            <td><input th:placeholder="Amount" th:field="*{amount}" type="number" required/></td>
-                            <td><input th:placeholder="Date" th:field="*{date}" type="date" dataformatas="mm-yyyy" inputmode="months" required/></td>
+                            <td><input th:field="*{title}" type="text" required/></td>
+                            <td><input th:field="*{description}" type="text"/></td>
+                            <td><input th:field="*{amount}" type="number" required/></td>
+                            <td><input th:field="*{date}" type="month" dataformatas="mm-yyyy" required/></td>
                         </tr>
                         </tbody>
                     </table>

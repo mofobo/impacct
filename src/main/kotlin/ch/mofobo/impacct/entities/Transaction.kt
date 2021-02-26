@@ -1,7 +1,6 @@
 package ch.mofobo.impacct.entities
 
-import ch.mofobo.impacct.enums.Period
-import ch.mofobo.impacct.enums.TransactionType
+import java.time.YearMonth
 import javax.persistence.*
 
 @Entity(name = "transactions")
@@ -26,8 +25,5 @@ class Transaction(
 
         var amount: Int,
 
-        @Column(name = "period")
-        var period: String,
-
-        var date: String
+        @Convert(converter = YearMonthDateAttributeConverter::class) var date: YearMonth
 )

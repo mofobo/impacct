@@ -1,7 +1,7 @@
 package ch.mofobo.impacct.dtos
 
-import ch.mofobo.impacct.enums.Period
 import ch.mofobo.impacct.enums.TransactionType
+import java.time.YearMonth
 
 data class TransactionDto(
         var type: TransactionType,
@@ -9,6 +9,5 @@ data class TransactionDto(
         var title: String,
         var description: String,
         var amount: Int,
-        var period: Period,
-        var date: String
+        var date: YearMonth
 )
