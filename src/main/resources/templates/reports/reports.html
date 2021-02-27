@@ -3,7 +3,7 @@
 <head>
     <meta charset="ISO-8859-1"/>
     <title>Reports</title>
-    <link th:href="@{/styles/pie-chart.css}" rel="stylesheet"/>
+    <link th:href="@{/styles/reports.css}" rel="stylesheet"/>
 </head>
 <body>
 <div th:replace="fragments/navbar"></div>
@@ -12,9 +12,9 @@
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 
-<h1>Welcome to reports!</h1>
+<h1 th:text="${selectedYear}"></h1>
 <div><select class="form-select" aria-label="Default select example" onchange="navigateTo(this.value)">
-    <option th:each="date : ${dates}" th:value="${date}" th:text="${date.toString()}"></option>
+    <option th:each="year : ${availableYears}" th:value="${year}" th:text="${year}"></option>
 </select></div>
 <div id="container" style="height: 400px"></div>
 <script th:inline="javascript">
@@ -26,10 +26,10 @@
             type: 'pie'
         },
         title: {
-            text: 'Browser market shares in January, 2018'
+            text: 'Expenses by category ' +/*[[${selectedYear}]]*/null
         },
         tooltip: {
-            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            pointFormat: '{series.name}: <b>{point.y*1.0/100.0} CHF</b>'
         },
         accessibility: {
             point: {
@@ -42,12 +42,12 @@
                 cursor: 'pointer',
                 dataLabels: {
                     enabled: true,
-                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                    format: '<b>{point.name}</b>: {point.percentage*.01f} %'
                 }
             }
         },
         series: [{
-            name: 'Brands',
+            name: 'Expenses',
             colorByPoint: true,
             data: [
                 /*[# th:each="data : ${list}"]*/

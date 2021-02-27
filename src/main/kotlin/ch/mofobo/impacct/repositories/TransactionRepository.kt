@@ -12,7 +12,7 @@ import java.time.YearMonth
 @Repository
 interface TransactionRepository : JpaRepository<Transaction, Int> {
     fun findAllByOwnerEmail(ownerEmail: String, pageable: Pageable): Page<Transaction>
-    fun findAllByCategoryAndDateBetween(category: Category, year1: YearMonth, year2: YearMonth): MutableList<Transaction>
+    fun findAllByCategoryAndDateBetweenAndType(category: Category, year1: YearMonth, year2: YearMonth, type: String): MutableList<Transaction>
 
     @Query("SELECT trx.date from transactions trx")
     fun getAllDates(): MutableList<YearMonth>?

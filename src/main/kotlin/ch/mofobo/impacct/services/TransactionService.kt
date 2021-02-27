@@ -4,6 +4,7 @@ import ch.mofobo.impacct.dtos.CategoryDto
 import ch.mofobo.impacct.dtos.PieChartData
 import ch.mofobo.impacct.dtos.TransactionDto
 import ch.mofobo.impacct.entities.Transaction
+import ch.mofobo.impacct.enums.TransactionType
 import ch.mofobo.impacct.repositories.CategoryRepository
 import ch.mofobo.impacct.repositories.TransactionRepository
 import org.springframework.data.domain.Page
@@ -63,7 +64,7 @@ class TransactionService(
         val pieChartDataList = mutableListOf<PieChartData>()
         val categories = categoryRepository.findAll()
         categories.forEach { category ->
-            val transactionsByCategory = transactionRepository.findAllByCategoryAndDateBetween(category, YearMonth.of(year, 1), YearMonth.of(year + 1, 1))
+            val transactionsByCategory = transactionRepository.findAllByCategoryAndDateBetweenAndType(category, YearMonth.of(year, 1), YearMonth.of(year + 1, 1), TransactionType.EXPENSE.name)
             val label = category.name
             val value = transactionsByCategory.sumBy { it.amount }
             if (value > 0) pieChartDataList.add(PieChartData(label, value))

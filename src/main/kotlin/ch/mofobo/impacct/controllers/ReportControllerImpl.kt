@@ -9,18 +9,18 @@ class ReportControllerImpl(val transactionService: TransactionService) : ReportC
 
     companion object {
         private const val TEMPLATE_DIR = "reports/"
-        private const val TEMPLATE_PIE_CHART = TEMPLATE_DIR.plus("pie-chart")
+        private const val TEMPLATE_PIE_CHART = TEMPLATE_DIR.plus("reports")
     }
 
-    override fun getYearlyReport(year: Int, model: Model): String {
+    override fun getYearlyReport(selectedYear: Int, model: Model): String {
         val dates = transactionService.getAllDates()
-        val years = dates?.map { it.year.toString() }?.distinct()?.sortedByDescending { it }?.toMutableList()
-        years?.add(0,"Select year")
+        val availableYears = dates?.map { it.year.toString() }?.distinct()?.sortedByDescending { it }?.toMutableList()
+        availableYears?.add(0,"Select year")
 
-        val pieChartDataList = transactionService.getPieChartData(year)
+        val pieChartDataList = transactionService.getPieChartData(selectedYear)
 
-        model.addAttribute("dates", years)
-        model.addAttribute("year", year)
+        model.addAttribute("availableYears", availableYears)
+        model.addAttribute("selectedYear", selectedYear)
         model.addAttribute("list", pieChartDataList)
         return TEMPLATE_PIE_CHART
     }
