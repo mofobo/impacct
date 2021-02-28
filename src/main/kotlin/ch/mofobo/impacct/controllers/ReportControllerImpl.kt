@@ -18,10 +18,12 @@ class ReportControllerImpl(val transactionService: TransactionService) : ReportC
         availableYears?.add(0,"Select year")
 
         val pieChartDataList = transactionService.getPieChartData(selectedYear)
+        val stackedChartDataList=transactionService.getStackedGroupedChartData(selectedYear)
 
         model.addAttribute("availableYears", availableYears)
         model.addAttribute("selectedYear", selectedYear)
-        model.addAttribute("list", pieChartDataList)
+        model.addAttribute("pieChartDataList", pieChartDataList)
+        model.addAttribute("stackedChartDataList", stackedChartDataList)
         return TEMPLATE_PIE_CHART
     }
 }

@@ -17,17 +17,19 @@
             <th scope="col"><a th:href="@{'/transactions/page/' + ${currentPage} + '?sortField=category&sortDir=' + ${reverseSortDir}}">category</a></th>
             <th scope="col"><a th:href="@{'/transactions/page/' + ${currentPage} + '?sortField=title&sortDir=' + ${reverseSortDir}}">title</a></th>
             <th scope="col"><a th:href="@{'/transactions/page/' + ${currentPage} + '?sortField=description&sortDir=' + ${reverseSortDir}}">description</a></th>
+            <th scope="col"><a th:href="@{'/transactions/page/' + ${currentPage} + '?sortField=type&sortDir=' + ${reverseSortDir}}">type</a></th>
             <th scope="col"><a th:href="@{'/transactions/page/' + ${currentPage} + '?sortField=amount&sortDir=' + ${reverseSortDir}}">amount</a></th>
             <th scope="col"><a th:href="@{'/transactions/page/' + ${currentPage} + '?sortField=date&sortDir=' + ${reverseSortDir}}">date</a></th>
             <th>actions</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="transaction : ${transactions}">
+        <tr th:each="transaction : ${transactions}" th:classappend="${transaction.type=='EXPENSE' ? 'table-danger' : 'table-success'}">
             <td th:text="${transaction.id}"></td>
             <td th:text="${transaction.category.name}"></td>
             <td th:text="${transaction.title}"></td>
             <td th:text="${transaction.description}"></td>
+            <td th:text="${transaction.type}"></td>
             <td th:text="${#numbers.formatCurrency((transaction.amount*1.0)/100.0)}"></td>
             <td th:text="${transaction.date}"></td>
             <td><a th:href="@{/transactions/{id}/edit (id=${transaction.id})}" class="btn btn-primary">Edit</a>

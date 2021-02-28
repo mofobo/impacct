@@ -2,6 +2,7 @@ package ch.mofobo.impacct.services
 
 import ch.mofobo.impacct.dtos.CategoryDto
 import ch.mofobo.impacct.dtos.PieChartData
+import ch.mofobo.impacct.dtos.StackedGroupedChartData
 import ch.mofobo.impacct.dtos.TransactionDto
 import ch.mofobo.impacct.entities.Transaction
 import ch.mofobo.impacct.enums.TransactionType
@@ -66,10 +67,40 @@ class TransactionService(
         categories.forEach { category ->
             val transactionsByCategory = transactionRepository.findAllByCategoryAndDateBetweenAndType(category, YearMonth.of(year, 1), YearMonth.of(year + 1, 1), TransactionType.EXPENSE.name)
             val label = category.name
-            val value = transactionsByCategory.sumBy { it.amount }
+            val value = transactionsByCategory.sumBy { it.amount }.toFloat() / 100.0f
             if (value > 0) pieChartDataList.add(PieChartData(label, value))
         }
         return pieChartDataList
+    }
+
+    fun getStackedGroupedChartData(year: Int): MutableList<StackedGroupedChartData> {
+
+        val result = mutableListOf<StackedGroupedChartData>()
+
+        val expensesByMonth = HashMap<Int, Float>()
+        for (month in 1..12) {
+            val expenses = transactionRepository.findAllByTypeAndDate(TransactionType.EXPENSE.name, YearMonth.of(year, month))
+            val totalExpenses = expenses.sumBy { it.amount }.toFloat() / 100.0f
+            expensesByMonth.put(month-1, totalExpenses)
+        }
+        result.add(StackedGroupedChartData(TransactionType.EXPENSE.name, expensesByMonth.values.toTypedArray(), TransactionType.EXPENSE.name))
+
+        val map = HashMap<String, HashMap<Int, Float>>()
+
+        for (month in 1..12) {
+            val incomes = transactionRepository.findAllByTypeAndDate(TransactionType.INCOME.name, YearMonth.of(year, month))
+            val incomesByCategory = incomes.groupBy { it.category.name }
+
+            incomesByCategory.keys.forEach { category ->
+                if (map.containsKey(category).not()) map.put(category, HashMap())
+                map.get(category)!!.put(month, incomesByCategory.get(category)!!.sumBy { it.amount }.toFloat() / 100.0f)
+            }
+        }
+
+        map.forEach {
+            result.add(StackedGroupedChartData(it.key, it.value.values.toTypedArray(), TransactionType.INCOME.name))
+        }
+        return result
     }
 
     fun delete(transactionId: Int) {

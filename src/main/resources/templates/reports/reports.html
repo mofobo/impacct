@@ -12,11 +12,12 @@
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 
-<h1 th:text="${selectedYear}"></h1>
+<h1 th:text="'Reports for ' + ${selectedYear}"></h1>
 <div><select class="form-select" aria-label="Default select example" onchange="navigateTo(this.value)">
-    <option th:each="year : ${availableYears}" th:value="${year}" th:text="${year}"></option>
+    <option th:each="year : ${availableYears}" th:value="${year}" th:text="${year}" th:selected="(${selectedYear} == *{year})"></option>
 </select></div>
 <div id="container" style="height: 400px"></div>
+<div id="container2"></div>
 <script th:inline="javascript">
     Highcharts.chart('container', {
         chart: {
@@ -26,10 +27,10 @@
             type: 'pie'
         },
         title: {
-            text: 'Expenses by category ' +/*[[${selectedYear}]]*/null
+            text: 'Expenses by category'
         },
         tooltip: {
-            pointFormat: '{series.name}: <b>{point.y*1.0/100.0} CHF</b>'
+            pointFormat: '{series.name}: <b>{point.y:.2f} CHF</b>'
         },
         accessibility: {
             point: {
@@ -42,7 +43,7 @@
                 cursor: 'pointer',
                 dataLabels: {
                     enabled: true,
-                    format: '<b>{point.name}</b>: {point.percentage*.01f} %'
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
                 }
             }
         },
@@ -50,7 +51,7 @@
             name: 'Expenses',
             colorByPoint: true,
             data: [
-                /*[# th:each="data : ${list}"]*/
+                /*[# th:each="data : ${pieChartDataList}"]*/
                 {
                     name: [[${data.label}]],
                     y: [[${data.value}]]
@@ -58,6 +59,55 @@
                 /*[/]*/
             ]
         }]
+    });
+</script>
+
+<script th:inline="javascript">
+    Highcharts.chart('container2', {
+
+        chart: {
+            type: 'column'
+        },
+
+        title: {
+            text: 'Incomes (by category) and total expenses per month'
+        },
+
+        xAxis: {
+            categories: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+        },
+
+        yAxis: {
+            allowDecimals: false,
+            min: 0,
+            title: {
+                text: 'Swiss Franc (CHF)'
+            }
+        },
+
+        tooltip: {
+            formatter: function () {
+                return '<b>' + this.x + '</b><br/>' +
+                    this.series.name + ': ' + this.y + '<br/>' +
+                    'Total: ' + this.point.stackTotal;
+            }
+        },
+
+        plotOptions: {
+            column: {
+                stacking: 'normal'
+            }
+        },
+
+        series: [
+            /*[# th:each="data : ${stackedChartDataList}"]*/
+            {
+                name: [[${data.category}]],
+                data: [[${data.values}]],
+                stack: [[${data.stack}]]
+            },
+            /*[/]*/
+        ]
     });
 </script>
 
