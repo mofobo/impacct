@@ -3,7 +3,7 @@
       integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
       crossorigin="anonymous">
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light" xmlns:th="http://www.w3.org/1999/xhtml">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
         <a class="navbar-brand" href="/">ImpAcct</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
@@ -16,6 +16,14 @@
                 <li class="nav-item"><a class="nav-link active" aria-current="page" href="/transactions/page/1">Transactions</a></li>
                 <li class="nav-item"><a class="nav-link active" href="/categories/page/1">Categories</a></li>
                 <li class="nav-item"><a class="nav-link active" href="/reports/year/2021">Reports</a></li>
+
+                <li class="nav-item">
+                    <form method="post" action="/logout">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        <button id="logout-button" type="submit">Logout</button>
+                    </form>
+                </li>
+
             </ul>
         </div>
     </div>

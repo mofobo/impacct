@@ -16,4 +16,6 @@ class HomeControllerImpl : HomeController {
         model.addAttribute("user", user)
         return TEMPLATE_HOME
     }
+
+    override fun error403(): String = "Oupppps, sorry but you are not authorized to perform this action."
 }

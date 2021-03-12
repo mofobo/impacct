@@ -5,6 +5,7 @@ okta:
     issuer: https://dev-62601352.okta.com/oauth2/default
     client-id: 0oa4xn4jrZecZ3ryw5d6
     client-secret: o4-aWkNoStzQvNa4xJmb64p3s6vcVJP6nwgaU3xe
+    groups-claim: true
 spring:
   thymeleaf:
     cache: false

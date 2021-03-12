@@ -11,6 +11,7 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.validation.BindingResult
+import java.security.Principal
 import java.time.YearMonth
 
 
@@ -27,14 +28,14 @@ class TransactionControllerImpl(val transactionService: TransactionService) : Tr
         private const val REDIRECT_TABLE = REDIRECT_ROOT.plus("/page/1")
     }
 
-    override fun getPaginatedTable(oidcUser: OidcUser, pageNo: Int, sortField: String?, sortDir: Sort.Direction?, model: Model): String {
+    override fun getPaginatedTable(oidcUser: OidcUser, page: Int, sortField: String?, sortDir: Sort.Direction?, model: Model, principal: Principal?): String {
         val field = sortField ?: "id"
         val direction = sortDir ?: Sort.Direction.ASC
         val size = 20
 
         val page: Page<Transaction> = transactionService.findPaginated(
                 oidcUser.email,
-                pageNo,
+                page,
                 size,
                 field,
                 direction
@@ -42,7 +43,7 @@ class TransactionControllerImpl(val transactionService: TransactionService) : Tr
 
         val reverseSortDir = if (direction.isAscending) Sort.Direction.DESC.name else Sort.Direction.ASC.name
 
-        model.addAttribute("currentPage", pageNo)
+        model.addAttribute("currentPage", page)
         model.addAttribute("totalPages", page.totalPages)
         model.addAttribute("totalItems", page.totalElements)
         model.addAttribute("sortField", field)
@@ -84,8 +85,8 @@ class TransactionControllerImpl(val transactionService: TransactionService) : Tr
     }
 
     override fun update(user: OidcUser, transactionId: Int, transactionDto: TransactionDto, result: BindingResult, model: Model): String {
-       System.out.println("transactionDto.id: "+transactionId)
-        transactionDto.id=transactionId
+        System.out.println("transactionDto.id: " + transactionId)
+        transactionDto.id = transactionId
         transactionService.save(transactionDto, user.email)
         return REDIRECT_TABLE
     }

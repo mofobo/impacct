@@ -8,36 +8,47 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser
 import org.springframework.ui.Model
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
+import java.security.Principal
 
 
 @RequestMapping(value = ["/transactions"])
 interface TransactionController {
 
-    @GetMapping("/page/{pageNo}")
+    companion object {
+        const val GET_PAGINATED_TABLE_URL = "/page/{page}"
+        const val GET_CREATE_FORM_URL = "/create"
+        const val GET_EDIT_FORM_URL = "/{transactionId}/edit"
+        const val SAVE_URL = "/save"
+        const val UPDATE_URL = "/{transactionId}/update"
+        const val DELETE_URL = "/{transactionId}/delete"
+    }
+
+    @GetMapping(GET_PAGINATED_TABLE_URL)
     fun getPaginatedTable(
             @AuthenticationPrincipal
             oidcUser: OidcUser,
-            @PathVariable(value = "pageNo")
-            pageNo: Int,
+            @PathVariable(value = "page")
+            page: Int,
             @RequestParam("sortField")
             sortField: String?,
             @RequestParam("sortDir")
             sortDir: Sort.Direction?,
-            model: Model): String
+            model: Model,
+            principal: Principal?): String
 
-    @GetMapping("/create")
+    @GetMapping(GET_CREATE_FORM_URL)
     fun getCreateForm(
             @AuthenticationPrincipal user: OidcUser,
             model: Model): String
 
-    @GetMapping("/{transactionId}/edit")
+    @GetMapping(GET_EDIT_FORM_URL)
     fun getEditForm(
             @PathVariable(value = "transactionId")
             transactionId: Int,
             @ModelAttribute transaction: CategoryDto,
             model: Model): String
 
-    @PostMapping("/save")
+    @PostMapping(SAVE_URL)
     fun save(
             @AuthenticationPrincipal
             user: OidcUser,
@@ -45,7 +56,7 @@ interface TransactionController {
             transactionDto: TransactionDto,
             model: Model): String
 
-    @PostMapping("/{transactionId}/update")
+    @PostMapping(UPDATE_URL)
     fun update(
             @AuthenticationPrincipal
             user: OidcUser,
@@ -56,7 +67,7 @@ interface TransactionController {
             result: BindingResult,
             model: Model): String
 
-    @GetMapping("/{transactionId}/delete")
+    @GetMapping(DELETE_URL)
     fun delete(
             @PathVariable("transactionId")
             transactionId: Int,

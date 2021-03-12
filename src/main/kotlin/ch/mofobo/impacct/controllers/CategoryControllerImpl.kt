@@ -47,23 +47,23 @@ class CategoryControllerImpl(val categoryService: CategoryService) : CategoryCon
         return TEMPLATE_CREATE
     }
 
-    override fun getEditForm(categoryId: Int, categoryDto: CategoryDto, model: Model): String {
+    override fun getEditForm(oidcUser: OidcUser, categoryId: Int, categoryDto: CategoryDto, model: Model): String {
         val category = categoryService.get(categoryId)
         model.addAttribute("category", CategoryDto(category))
         return TEMPLATE_EDIT
     }
 
-    override fun save(categoryDto: CategoryDto, model: Model): String {
+    override fun save(oidcUser: OidcUser, categoryDto: CategoryDto, model: Model): String {
         categoryService.save(categoryDto)
         return REDIRECT_TABLE
     }
 
-    override fun update(categoryId: Int, categoryDto: CategoryDto, result: BindingResult, model: Model): String {
+    override fun update(oidcUser: OidcUser, categoryId: Int, categoryDto: CategoryDto, result: BindingResult, model: Model): String {
         categoryService.save(CategoryDto(categoryId, categoryDto.name!!, categoryDto.description!!))
         return REDIRECT_TABLE
     }
 
-    override fun delete(categoryId: Int, model: Model?): String {
+    override fun delete(oidcUser: OidcUser, categoryId: Int, model: Model?): String {
         categoryService.delete(categoryId)
         return REDIRECT_TABLE
     }
